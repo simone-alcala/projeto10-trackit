@@ -1,18 +1,53 @@
-import React from 'react';
+import axios from 'axios';
+import React,  { useState }  from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+
 import styled from 'styled-components';
 
 import LoginHeader from '../LoginHeader';
+import Loading from '../Loading';
 
 function Login(){
+
+  const [userData, setUserData] = useState({});
+  const [disable, setDisable] = useState(false);
+
+  const [buttonText, setButtonText] = useState('Entrar');
+
+  const navigate = useNavigate();
+
+  async function login(e){
+    e.preventDefault();
+    setDisable(true);
+    setButtonText( <Loading size={50} /> );
+    const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login';
+    try {
+      const promise = await axios.post(URL,userData);
+      //navigate('/hoje');
+      console.log(promise.data);
+    } catch (error) {
+      alert(`Erro no login: \n\n${error}`);
+      setDisable(false);
+      setButtonText( 'Entrar' );
+    }
+   }
+    
   return(
     <Container>
       <LoginHeader />
-      
-      <form>
-        <input type='email' placeholder='email' required />
-        <input type='password' placeholder='senha' required />
-        <button type='submit' >Entrar</button>
-        <div>Não tem uma conta? Cadastre-se! </div>
+    
+      <form onSubmit={login}>
+        <input type='email' placeholder='email' required value={userData.email} disabled={disable}
+          onChange={ e => setUserData({...userData, email: e.target.value }) }/>
+        <input type='password' placeholder='senha' required value={userData.password} disabled={disable}
+          onChange={ e => setUserData({...userData, password: e.target.value }) }/>
+        
+        <button type='submit' disabled={disable}> {buttonText}  </button>
+        
+        {disable ? 
+          <div>Não tem uma conta? Cadastre-se! </div> :
+          <Link to={'/cadastro'}> <div>Não tem uma conta? Cadastre-se! </div>  </Link>}
+
       </form>
     </Container>
   );
