@@ -8,7 +8,7 @@ import LoginHeader from '../LoginHeader';
 import Loading from '../Loading';
 
 function UserRegister(){
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState({email:'',password:'',name:'',image:''});
   const [disable, setDisable] = useState(false);
   const [buttonText, setButtonText] = useState('Cadastrar');
   const navigate = useNavigate();
