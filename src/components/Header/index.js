@@ -1,11 +1,16 @@
+import { useContext }  from 'react';
+
+import UserContext from '../../contexts/UserContext';
+
 import styled from 'styled-components';
 
 function HabitsHeader(){
+  const { avatar } = useContext(UserContext);
   return (
     <Container imgSrc>
       <div>
         TrackIt
-        <img src='https://1.bp.blogspot.com/_298fEV7jCAo/SvAqfQVBKWI/AAAAAAAAFmQ/kZxJrHqPSEo/s400/logo.jpg' alt='user' />
+        <img src={avatar} alt='user' />
       </div>
     </Container>
   );

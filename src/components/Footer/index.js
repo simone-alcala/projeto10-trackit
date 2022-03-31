@@ -1,12 +1,13 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-function HabitsFooter(){
+function Footer(){
   return (
     <Container>
       <div>
-        <p>Hábitos</p>
+        <Link to='/habitos'><p>Hábitos</p></Link>
         <Today> Hoje </Today>
-        <p>Histórico</p>
+        <Link to='/historico'><p>Histórico</p></Link>
       </div>
     </Container>
   );
@@ -33,6 +34,15 @@ const Container = styled.section`
     color: var( --button-color);
     position: relative;
   }
+  
+  a:visited {
+    color: var( --button-color);
+  }
+
+  p:hover{
+    cursor: pointer;
+  }
+
 `;
 
 const Today = styled.div`
@@ -45,4 +55,4 @@ const Today = styled.div`
   color: #FFF;
 `;
 
-export default HabitsFooter;
+export default Footer;

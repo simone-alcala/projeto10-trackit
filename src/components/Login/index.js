@@ -1,18 +1,20 @@
 import axios from 'axios';
-import React,  { useState }  from 'react';
+import React,  { useState , useContext }  from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
 
 import LoginHeader from '../LoginHeader';
 import Loading from '../Loading';
+import UserContext from '../../contexts/UserContext';
 
 function Login(){
 
-  const [userData, setUserData] = useState({email:'',password:'',token:'',avatar:''});
+  const [userData, setUserData] = useState({email:'',password:''});
   const [disable, setDisable] = useState(false);
-
   const [buttonText, setButtonText] = useState('Entrar');
+
+  const { setToken , setAvatar } = useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -24,9 +26,9 @@ function Login(){
     const promise = axios.post(URL, { email: userData.email, password: userData.password });
     
     promise.then((promise)=>{
-      //navigate('/hoje');
-      setUserData({...userData, token: promise.data.token, avatar: promise.data.image});
-      console.log(promise);
+      navigate('/hoje');
+      setToken(promise.data.token);
+      setAvatar(promise.data.image);
     });
 
     promise.catch((error)=>{
@@ -39,7 +41,7 @@ function Login(){
     
   return(
     <Container>
-      
+
       <LoginHeader />
     
       <form onSubmit={login}>
