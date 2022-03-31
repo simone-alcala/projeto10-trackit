@@ -9,7 +9,7 @@ import Loading from '../Loading';
 
 function Login(){
 
-  const [userData, setUserData] = useState({email:'',password:''});
+  const [userData, setUserData] = useState({email:'',password:'',token:'',avatar:''});
   const [disable, setDisable] = useState(false);
 
   const [buttonText, setButtonText] = useState('Entrar');
@@ -18,46 +18,45 @@ function Login(){
 
   function login(e){
     e.preventDefault();
-    //setDisable(true);
-    //setButtonText( <Loading size={50} /> );
+    setDisable(true);
+    setButtonText( <Loading size={50} /> );
     const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login';
-    const promise = axios.post(URL,null);
+    const promise = axios.post(URL, { email: userData.email, password: userData.password });
     
-    promise.then((promise)=>console.log(promise));
+    promise.then((promise)=>{
+      //navigate('/hoje');
+      setUserData({...userData, token: promise.data.token, avatar: promise.data.image});
+      console.log(promise);
+    });
 
     promise.catch((error)=>{
-      
-      console.log(error);
-    });
-    
-    /*try {
-      const promise = await axios.post(URL,userData);
-      //navigate('/hoje');
-      console.log(promise.data);
-    } catch (error) {
-      alert(`Erro no login: \n\n${error}`);
+      alert(`Erro no login: \n\n${error.response.status} - ${error.response.data.message}`);
       setDisable(false);
       setButtonText( 'Entrar' );
-    }*/
+    });
+
    }
     
   return(
     <Container>
+      
       <LoginHeader />
     
       <form onSubmit={login}>
+
         <input type='email' placeholder='email' required value={userData.email} disabled={disable}
                   onChange={ e => setUserData({...userData, email: e.target.value }) }/>
-        <input type='password' placeholder='senha' required value={userData.password} 
+        <input type='password' placeholder='senha' required value={userData.password} disabled={disable}
           onChange={ e => setUserData({...userData, password: e.target.value }) }/>
         
-        <button type='submit'> {buttonText}  </button>
+        <button type='submit' disabled={disable} > {buttonText}  </button>
         
         {disable ? 
           <div>Não tem uma conta? Cadastre-se! </div> :
           <Link to={'/cadastro'}> <div>Não tem uma conta? Cadastre-se! </div>  </Link>}
 
       </form>
+      
     </Container>
   );
 }

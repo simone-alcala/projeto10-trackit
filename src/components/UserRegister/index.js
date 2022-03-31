@@ -13,19 +13,21 @@ function UserRegister(){
   const [buttonText, setButtonText] = useState('Cadastrar');
   const navigate = useNavigate();
 
-  async function registerUser(e){
+  function registerUser(e){
     e.preventDefault();
     setDisable(true);
     setButtonText( <Loading size={50} /> );
     const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up';
-    try {
-      await axios.post(URL,userData);
-      navigate('/');
-    } catch (error) {
-      alert(`Erro ao cadastrar: \n\n${error}`);
+
+    const promise = axios.post(URL,userData);
+
+    promise.then(()=>navigate('/'));
+    promise.catch((error)=> {
+      alert(`Erro ao cadastrar: \n\n${error.response.status} - ${error.response.data.message}`);
       setDisable(false);
       setButtonText( 'Cadastrar' );
-    }
+    });
+   
    }
 
   return(

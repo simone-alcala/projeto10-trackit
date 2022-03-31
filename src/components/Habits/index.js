@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-import Header from './../HabitsHeader';
-import Footer from './../HabitsFooter';
+import Header from './../Header';
+import Footer from './../Footer';
 
 function Habits(){
   return (
@@ -19,7 +19,7 @@ const Container = styled.section`
   display: flex;
   align-items: center;
   justify-content: center;
-  "Authorization"
+ 
 `;
 
 export default Habits;
