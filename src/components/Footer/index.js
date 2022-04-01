@@ -35,7 +35,7 @@ const Container = styled.section`
     position: relative;
   }
   
-  a:visited {
+  a{
     color: var( --button-color);
   }
 
