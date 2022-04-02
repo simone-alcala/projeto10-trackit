@@ -9,6 +9,7 @@ function Habit(props){
   const { habit, loadList } = props;
   const { token } = useContext(UserContext);
   const [clicked,setClicked] = useState({0:false,1:false,2:false,3:false,4:false,5:false,6:false});
+  
   useEffect(()=>{
     if (habit.days!==undefined) 
       for(let day of habit.days) setClicked({...clicked,[day]:true});
@@ -45,6 +46,7 @@ function Habit(props){
           <Delete type='submit'><ion-icon name="trash-outline"></ion-icon></Delete>
         </Buttons>
       </form> 
+
     </Container>         
   );
 }

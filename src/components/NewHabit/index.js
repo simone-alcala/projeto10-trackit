@@ -60,7 +60,6 @@ function NewHabit(props){
   
   return (!added && !cancel)  && (
     <Container key={id} >
-      {console.log(cancel)}
       <form onSubmit={createHabit} >
         <input type='text' placeholder='nome do hábito' required value={habit} 
           onChange={(e)=>setHabit(e.target.value)} disabled={disable}/>

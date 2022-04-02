@@ -8,6 +8,7 @@ import Header from './../Header';
 import Footer from './../Footer';
 import Habit from './../Habit';
 import NewHabit from './../NewHabit';
+import Percentage from './../Percentage'
 
 function Habits(){
 
@@ -42,6 +43,7 @@ function Habits(){
         : <NoHabit>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</NoHabit>  }
       </Container>
       <Footer />
+      <Percentage habitsList={habitsList}/>
     </>
   );
 }
