@@ -7,45 +7,39 @@ import UserContext from '../../contexts/UserContext';
 import Header from './../Header';
 import Footer from './../Footer';
 import Habit from './../Habit';
+import NewHabit from './../NewHabit';
 
 function Habits(){
 
   const [habits, setHabits] = useState([]);
   const [habitsList, setHabitsList] = useState([]);
   const { token } = useContext(UserContext);
+  
+  useEffect(()=>{ if (token.length > 0) getList(token) } , [token]);
+  
+  function loadList(load){
+    if (load) getList(token)  
+  }
 
-  useEffect(()=>{
-
-    if (token.length > 0) {
-      const CONFIG =  { headers: { Authorization: `Bearer ${token}` } };
-      const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits';
-      const promise = axios.get(URL,CONFIG);
-      promise.then((response)=> setHabitsList(response.data) );
-      promise.catch((error)=> alert(`Erro ao carregar hábitos: \n\n${error.response.status} - ${error.response.data.message}`));
-    }
-    
-  },[token]);
-
-
+  function getList(token){
+    const CONFIG =  { headers: { Authorization: `Bearer ${token}` } };
+    const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits';
+    const promise = axios.get(URL,CONFIG);     
+    promise.then((response)=> {
+      setHabitsList([...response.data]) ;
+    });         
+    promise.catch((error)=> alert(`Erro ao carregar hábitos: \n\n${error.response.status} - ${error.response.data.message}`));
+  }
+ 
   return (
     <>
       <Header />
       <Container>
-        <Title> <P>Meus hábitos</P>          
-          <Add onClick={()=>setHabits([...habits,' ']) } >+</Add> 
-        </Title>
-
-        {habits.length > 0 &&
-          habits.map((habit,index) => <Habit key={index} adding={true}/>) 
-        }
-
-        {habitsList.length > 0 &&
-          habitsList.map((habit,index) => <Habit key={index} adding={false}
-            id={habit.id} name={habit.name} days={habit.days} /> ) 
-        }
-
-        <NoHabit>Você não tem nenhum hábito cadastrado ainda. 
-          Adicione um hábito para começar a trackear!</NoHabit>
+        <Title> <P>Meus hábitos</P> <Add onClick={()=>setHabits([...habits,' ']) } >+</Add> </Title>
+        {habits.length > 0 && habits.map((habit,index) => <NewHabit key={index} loadList={loadList}/>) }
+        {habitsList.length > 0 ?
+          habitsList.map((habit,index) => <Habit key={index} loadList={loadList} habit={habit} /> )
+        : <NoHabit>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</NoHabit>  }
       </Container>
       <Footer />
     </>
