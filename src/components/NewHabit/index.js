@@ -76,7 +76,7 @@ function NewHabit(props){
           <Cancel onClick={cancelHabit} type='reset' disabled={disable}>Cancelar</Cancel>
           <Save type='submit' disabled={disable}>{buttonText}</Save>
         </Buttons>
-      </form>        
+      </form>    
     </Container>         
   );
 }

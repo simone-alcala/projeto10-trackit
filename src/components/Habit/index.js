@@ -11,8 +11,13 @@ function Habit(props){
   const [clicked,setClicked] = useState({0:false,1:false,2:false,3:false,4:false,5:false,6:false});
   
   useEffect(()=>{
-    if (habit.days!==undefined) 
-      for(let day of habit.days) setClicked({...clicked,[day]:true});
+    if (habit.days!==undefined) {
+      const isClicked = {};
+      for(let day of habit.days) {
+        isClicked[day]=true;       
+      }
+      setClicked({...isClicked});
+    }
   },[]);
 
   function deleteHabit(e){
