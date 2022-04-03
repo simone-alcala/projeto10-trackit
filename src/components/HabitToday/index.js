@@ -31,7 +31,6 @@ function HabitToday(props){
       setDone(!done);
     });
     promise.catch((error)=> alert(`Erro ao atualizar hábito: \n\n${error.response.status}`)) ;
-
   }   
     
   
@@ -40,8 +39,8 @@ function HabitToday(props){
     <Container>
       <div>
         <Name>{name}</Name>
-        <Other>Sequência atual: <Span done={done}>{currentSequence} </Span></Other>
-        <Other>Seu recorde: <Span done={done}>{highestSequence}</Span></Other>
+        <Other>Sequência atual: <Span done={done}>{currentSequence}</Span></Other>
+        <Other>Seu recorde: <Span done={currentSequence===highestSequence && habitInfo.highestSequence > 0}>{highestSequence}</Span></Other>
       </div>
       <Icon onClick={handleDone} done={done}><ion-icon name="checkmark-outline"></ion-icon></Icon>   
     </Container>
