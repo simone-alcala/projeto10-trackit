@@ -18,7 +18,7 @@ function Habit(props){
       }
       setClicked({...isClicked});
     }
-  },[]);
+  },[habit]);
 
   function deleteHabit(e){
     e.preventDefault();
@@ -29,7 +29,7 @@ function Habit(props){
       const CONFIG =  { headers: { Authorization: `Bearer ${token}` } };
       const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}`;
       const promise = axios.delete(URL,CONFIG);
-      promise.then((response)=> loadList(true) );
+      promise.then((response)=> loadList({load:true,delete:true}) );
       promise.catch((error)=> alert(`Erro na exclusão: \n\n${error.response.status} - ${error.response.data.message}`));
     }
   }
@@ -50,8 +50,8 @@ function Habit(props){
         <Buttons>
           <Delete type='submit'><ion-icon name="trash-outline"></ion-icon></Delete>
         </Buttons>
-      </form> 
 
+      </form> 
     </Container>         
   );
 }

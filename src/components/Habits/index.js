@@ -12,14 +12,19 @@ import Percentage from './../Percentage'
 
 function Habits(){
 
-  const [habits, setHabits] = useState([]);
+  const [habits, setHabits] = useState({enableNewHabit: false, enableAddHabit: true});
   const [habitsList, setHabitsList] = useState([]);
   const { token } = useContext(UserContext);
   
   useEffect(()=>{ if (token.length > 0) getList(token) } , [token]);
   
-  function loadList(load){
-    if (load) getList(token)  
+  function loadList(loading){
+    if (loading.load) getList(token);
+    if (!loading.delete) setHabits({...{enableNewHabit: false, enableAddHabit: true}});
+  }
+
+  function newHabit(){
+    setHabits({...{enableNewHabit: true, enableAddHabit: false}});
   }
 
   function getList(token){
@@ -31,13 +36,15 @@ function Habits(){
     });         
     promise.catch((error)=> alert(`Erro ao carregar hábitos: \n\n${error.response.status} - ${error.response.data.message}`));
   }
- 
+
   return (
     <>
       <Header />
       <Container>
-        <Title> <P>Meus hábitos</P> <Add onClick={()=>setHabits([...habits,' ']) } >+</Add> </Title>
-        {habits.length > 0 && habits.map((habit,index) => <NewHabit key={index} loadList={loadList}/>) }
+        <Title> <P>Meus hábitos</P> <Add onClick={newHabit} disabled={habits.enableAddHabit}>+</Add> </Title>
+
+        {habits.enableNewHabit && <NewHabit loadList={loadList} updateButtons={setHabits}/> }
+
         {habitsList.length > 0 ?
           habitsList.map((habit,index) => <Habit key={index} loadList={loadList} habit={habit} /> )
         : <NoHabit>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</NoHabit>  }
@@ -46,6 +53,7 @@ function Habits(){
       <Percentage habitsList={habitsList}/>
     </>
   );
+
 }
 
 const Container = styled.section`

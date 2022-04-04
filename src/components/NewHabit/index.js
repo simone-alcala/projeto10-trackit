@@ -1,26 +1,35 @@
 import axios from 'axios';
-import { useState , useContext} from 'react';
+import { useState , useContext , useEffect} from 'react';
 
 import styled from 'styled-components';
 import UserContext from '../../contexts/UserContext';
+import NonSavedHabitContext from '../../contexts/NonSavedHabitContext';
 
 import Loading from '../Loading';
 
 function NewHabit(props){
   
-  const {id, loadList } = props;
+  const {id, loadList , updateButtons} = props;
 
   const { token } = useContext(UserContext);
+  const { nonSaved , setNonSaved } = useContext(NonSavedHabitContext);
 
   const [habit, setHabit] = useState('');
   const [days, setDays] = useState([]);
   const [added, setAdded] = useState(false);
   const [cancel, setCancel] = useState(false);
-
   const [disable, setDisable] = useState(false);
   const [buttonText, setButtonText] = useState('Salvar');
+  const [clicked,setClicked] = useState({0:false,1:false,2:false,3:false,4:false,5:false,6:false}); 
 
-  const [clicked,setClicked] = useState({0:false,1:false,2:false,3:false,4:false,5:false,6:false});
+
+  useEffect(()=>{
+    if ( nonSaved.name !== '' ){
+      setHabit(nonSaved.name);
+      setClicked({...nonSaved.clicked});
+      setDays([...nonSaved.days]);
+    }
+  },[]);
 
   function toggleDays(day){
     if (days.includes(day)){
@@ -45,8 +54,9 @@ function NewHabit(props){
     const BODY = {name: habit, days: days};
     const promise = axios.post(URL,BODY,CONFIG);
     promise.then((response)=>{
-      loadList(true);
+      loadList({load:true,delete:false});
       setAdded(true);
+      setNonSaved( {name:'', days:[], clicked:{} } );
     });
     promise.catch((error)=> { 
       setDisable(false);
@@ -56,9 +66,15 @@ function NewHabit(props){
 
   function cancelHabit(e){
     setCancel(true);
+    updateButtons({...{enableNewHabit: false, enableAddHabit: true}});
+
+    if (habit !== '' ) {
+      setNonSaved( {name:habit, clicked:clicked, days:days} );
+    }
   }
   
   return (!added && !cancel)  && (
+   
     <Container key={id} >
       <form onSubmit={createHabit} >
         <input type='text' placeholder='nome do hábito' required value={habit} 
@@ -77,7 +93,10 @@ function NewHabit(props){
           <Save type='submit' disabled={disable}>{buttonText}</Save>
         </Buttons>
       </form>    
+
+      {console.log('passando')}
     </Container>         
+
   );
 }
 

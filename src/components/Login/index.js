@@ -20,6 +20,7 @@ function Login(){
 
   function login(e){
     e.preventDefault();
+    setToken('');
     setDisable(true);
     setButtonText( <Loading size={50} /> );
     const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login';
@@ -29,6 +30,7 @@ function Login(){
       navigate('/hoje');
       setToken(promise.data.token);
       setAvatar(promise.data.image);
+      localStorage.setItem('tokenSimone',promise.data.token);
     });
 
     promise.catch((error)=>{
