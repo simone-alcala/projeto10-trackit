@@ -15,7 +15,7 @@ function App(){
   const [token, setToken] = useState( getToken );
   const [avatar, setAvatar] = useState( getAvatar );
   const [habits, setHabits] = useState([]);
-  const [percentage, setPercentage] = useState([]);
+  const [percentage, setPercentage] = useState('');
 
   const [nonSaved, setNonSaved] = useState({name:'', days:[], clicked:{} });
 

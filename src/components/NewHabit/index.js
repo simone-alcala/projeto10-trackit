@@ -22,7 +22,6 @@ function NewHabit(props){
   const [buttonText, setButtonText] = useState('Salvar');
   const [clicked,setClicked] = useState({0:false,1:false,2:false,3:false,4:false,5:false,6:false}); 
 
-
   useEffect(()=>{
     if ( nonSaved.name !== '' ){
       setHabit(nonSaved.name);
@@ -70,7 +69,10 @@ function NewHabit(props){
 
     if (habit !== '' ) {
       setNonSaved( {name:habit, clicked:clicked, days:days} );
+    } else {
+      setNonSaved( {name:'', clicked:{0:false,1:false,2:false,3:false,4:false,5:false,6:false}, days:[]} );
     }
+
   }
   
   return (!added && !cancel)  && (
@@ -93,8 +95,6 @@ function NewHabit(props){
           <Save type='submit' disabled={disable}>{buttonText}</Save>
         </Buttons>
       </form>    
-
-      {console.log('passando')}
     </Container>         
 
   );
