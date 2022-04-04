@@ -13,7 +13,7 @@ import History from './../History';
 function App(){
   
   const [token, setToken] = useState( getToken );
-  const [avatar, setAvatar] = useState([]);
+  const [avatar, setAvatar] = useState( getAvatar );
   const [habits, setHabits] = useState([]);
   const [percentage, setPercentage] = useState([]);
 
@@ -21,16 +21,22 @@ function App(){
 
   function getToken (){
     const localToken = localStorage.getItem('tokenSimone');
-    
-    console.log(localToken);
-    
-    if ( localToken !== undefined && localToken !== null && localToken !== '') {
+     if ( localToken !== undefined && localToken !== null && localToken !== '') {
       return localStorage.getItem('tokenSimone') ;
     } else {
       return '';
     }
-
   }
+
+  function getAvatar (){
+    const localAvatar = localStorage.getItem('avatarSimone');
+     if ( localAvatar !== undefined && localAvatar !== null && localAvatar !== '') {
+      return localStorage.getItem('avatarSimone') ;
+    } else {
+      return '';
+    }
+  }
+
 
   return(
     <BrowserRouter>
